@@ -1,0 +1,39 @@
+//@version=5
+indicator("Multi-Timeframe 666 Moving Average", shorttitle="MTF MA666", overlay=true)
+
+// Input for MA type
+ma_type = input.string("SMA", title="MA Type", options=["SMA", "EMA", "WMA", "RMA"], group="666 Algorithm Settings")
+
+// Function to get MA based on type
+get_ma(source, length) =>
+    switch ma_type
+        "SMA" => ta.sma(source, length)
+        "EMA" => ta.ema(source, length)
+        "WMA" => ta.wma(source, length)
+        "RMA" => ta.rma(source, length)
+
+// Multi-timeframe 666 Moving Averages
+ma666_1m = request.security(syminfo.tickerid, "1", get_ma(close, 666), lookahead=barmerge.lookahead_off)
+ma666_3m = request.security(syminfo.tickerid, "3", get_ma(close, 666), lookahead=barmerge.lookahead_off)
+ma666_5m = request.security(syminfo.tickerid, "5", get_ma(close, 666), lookahead=barmerge.lookahead_off)
+ma666_15m = request.security(syminfo.tickerid, "15", get_ma(close, 666), lookahead=barmerge.lookahead_off)
+
+// Plot all timeframes with different colors
+plot(ma666_1m, title="666 MA (1m)", color=color.orange, linewidth=2)
+plot(ma666_3m, title="666 MA (3m)", color=color.yellow, linewidth=2)
+plot(ma666_5m, title="666 MA (5m)", color=color.red, linewidth=2)
+plot(ma666_15m, title="666 MA (15m)", color=color.blue, linewidth=2)
+
+// Optional: Add legend in a table for clarity
+if barstate.islast
+    var table legend = table.new(position.top_right, 2, 5, bgcolor=color.white, border_width=1)
+    table.cell(legend, 0, 0, "Timeframe", text_color=color.black, text_size=size.small)
+    table.cell(legend, 1, 0, "666 MA", text_color=color.black, text_size=size.small)
+    table.cell(legend, 0, 1, "1m", text_color=color.orange, text_size=size.small)
+    table.cell(legend, 1, 1, "●", text_color=color.orange, text_size=size.normal)
+    table.cell(legend, 0, 2, "3m", text_color=color.yellow, text_size=size.small)
+    table.cell(legend, 1, 2, "●", text_color=color.yellow, text_size=size.normal)
+    table.cell(legend, 0, 3, "5m", text_color=color.red, text_size=size.small)
+    table.cell(legend, 1, 3, "●", text_color=color.red, text_size=size.normal)
+    table.cell(legend, 0, 4, "15m", text_color=color.blue, text_size=size.small)
+    table.cell(legend, 1, 4, "●", text_color=color.blue, text_size=size.normal)
