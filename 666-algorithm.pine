@@ -1,7 +1,7 @@
 //@version=5
 strategy("Multi-Timeframe 666 MA Strategy", shorttitle="666 Strategy", overlay=true, 
          default_qty_type=strategy.percent_of_equity, default_qty_value=10, 
-         pyramiding=2, calc_on_every_tick=true)
+         pyramiding=2, calc_on_every_tick=true, process_orders_on_close=true)
 
 // Input for MA type
 ma_type = input.string("SMA", title="MA Type", options=["SMA", "EMA", "WMA", "RMA"])
@@ -81,8 +81,8 @@ if strategy.position_size == 0
     initial_stop := na
     trailing_active := false
 
-// Debug info
-plotchar(entry_1_condition, "Entry1", "1", location.belowbar, color.green, size=size.small)
-plotchar(entry_2_condition, "Entry2", "2", location.belowbar, color.lime, size=size.small)
-plotchar(uptrend, "UpTrend", "▲", location.top, color.green, size=size.tiny)
-plotchar(downtrend, "DownTrend", "▼", location.top, color.red, size=size.tiny)
+// Debug info (remove these if you don't want the markers)
+// plotchar(entry_1_condition, "Entry1", "1", location.belowbar, color.green, size=size.small)
+// plotchar(entry_2_condition, "Entry2", "2", location.belowbar, color.lime, size=size.small)
+// plotchar(uptrend, "UpTrend", "▲", location.top, color.green, size=size.tiny)
+// plotchar(downtrend, "DownTrend", "▼", location.top, color.red, size=size.tiny)
